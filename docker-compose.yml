@@ -41,3 +41,22 @@ services:
       - postgres
     healthcheck:
       test: "curl -f http://localhost:8080/health/ready || exit 1"
+
+  movies-api:
+    image: ghcr.io/skyglass-movie/movies-online-api:a80495babee56cf9357c08b686681cdcd9e533df
+    container_name: movies-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - keycloak
+
+  movies-ui:
+    image: ghcr.io/skyglass-movie/movies-online-ui:6aff98503b4087ba5f0da115a636eadd84a189a6
+    container_name: movies-ui
+    ports:
+      - "3200:3200"
+    depends_on:
+      - postgres
+      - keycloak
+      - movies-api       
