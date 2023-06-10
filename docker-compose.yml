@@ -43,7 +43,7 @@ services:
       test: "curl -f http://localhost:8080/health/ready || exit 1"
 
   movies-api:
-    image: ghcr.io/skyglass-movie/movies-online-api:eab411e130afb84dc3c2fc55b9e092da3e2a900e
+    image: ghcr.io/skyglass-movie/movies-online-api:1ccba0d20a18ffcc40a43d708e98720513bd1841
     container_name: movies-api
     environment:
       - SERVER_PORT=9080
@@ -59,7 +59,7 @@ services:
     image: ghcr.io/skyglass-movie/movies-online-ui:6aff98503b4087ba5f0da115a636eadd84a189a6
     container_name: movies-ui
     ports:
-      - "3000:3000"
+      - "80:80"
     depends_on:
       - postgres
       - keycloak
