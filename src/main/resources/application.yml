@@ -13,6 +13,13 @@ spring:
           issuer-uri: ${spring.keycloak.server-url}/realms/company-services
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
+ ### server port
+server:
+  port: 8081
+  servlet:
+    context-path: /
+  forward-headers-strategy: framework
+
 jwt:
   auth:
     converter:
@@ -22,7 +29,7 @@ jwt:
 app:
   redirect-url:
   cors:
-    allowed-origins:  ${movies-app.base-url}
+    allowed-origins: ${movies-app.base-url}
 
 movies-app:
   base-url: http://localhost:3000
