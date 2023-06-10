@@ -9,6 +9,7 @@ import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,17 +21,17 @@ import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
 @Component
 public class KeycloakInitializerRunner implements CommandLineRunner {
 
-    private final Keycloak keycloakAdmin;
+    @Autowired
+    private Keycloak keycloakAdmin;
 
     @Value("${spring.keycloak.server-url}")
-    private final String keycloakServerUrl;
+    private String keycloakServerUrl;
 
     @Value("${movies-app.redirect-url}")
-    private final String moviesAppRedirectUrl;
+    private String moviesAppRedirectUrl;
 
     @Override
     public void run(String... args) {

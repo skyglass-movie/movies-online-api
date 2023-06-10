@@ -43,7 +43,7 @@ services:
       test: "curl -f http://localhost:8080/health/ready || exit 1"
 
   movies-api:
-    image: ghcr.io/skyglass-movie/movies-online-api:d75ee59875b9fee61bebb5925eacd041d07ba687
+    image: ghcr.io/skyglass-movie/movies-online-api:eab411e130afb84dc3c2fc55b9e092da3e2a900e
     container_name: movies-api
     environment:
       - SERVER_PORT=9080

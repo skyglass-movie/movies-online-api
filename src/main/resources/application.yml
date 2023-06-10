@@ -3,7 +3,7 @@ spring:
     name: movies-api
   data:
     mongodb:
-      uri: mongodb://mongodb:27017/moviesdb
+      uri: mongodb://localhost:27017/moviesdb
   keycloak:
       server-url: http://localhost:8080
   security:
