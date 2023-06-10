@@ -9,6 +9,7 @@ import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,12 @@ import java.util.Optional;
 public class KeycloakInitializerRunner implements CommandLineRunner {
 
     private final Keycloak keycloakAdmin;
+
+    @Value("${spring.keycloak.server-url}")
+    private final String keycloakServerUrl;
+
+    @Value("${movies-app.redirect-url}")
+    private final String moviesAppRedirectUrl;
 
     @Override
     public void run(String... args) {
@@ -50,7 +57,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         clientRepresentation.setClientId(MOVIES_APP_CLIENT_ID);
         clientRepresentation.setDirectAccessGrantsEnabled(true);
         clientRepresentation.setPublicClient(true);
-        clientRepresentation.setRedirectUris(List.of(MOVIES_APP_REDIRECT_URL));
+        clientRepresentation.setRedirectUris(List.of(moviesAppRedirectUrl));
         clientRepresentation.setDefaultRoles(new String[]{WebSecurityConfig.USER});
         realmRepresentation.setClients(List.of(clientRepresentation));
 
@@ -81,7 +88,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         UserPass admin = MOVIES_APP_USERS.get(0);
         log.info("Testing getting token for '{}' ...", admin.username());
 
-        Keycloak keycloakMovieApp = KeycloakBuilder.builder().serverUrl(KEYCLOAK_SERVER_URL)
+        Keycloak keycloakMovieApp = KeycloakBuilder.builder().serverUrl(keycloakServerUrl)
                 .realm(COMPANY_SERVICE_REALM_NAME).username(admin.username()).password(admin.password())
                 .clientId(MOVIES_APP_CLIENT_ID).build();
 
@@ -98,10 +105,8 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         return Map.of(MOVIES_APP_CLIENT_ID, roles);
     }
 
-    private static final String KEYCLOAK_SERVER_URL = "http://localhost:8080";
     private static final String COMPANY_SERVICE_REALM_NAME = "company-services";
     private static final String MOVIES_APP_CLIENT_ID = "movies-app";
-    private static final String MOVIES_APP_REDIRECT_URL = "http://localhost:3000/*";
     private static final List<UserPass> MOVIES_APP_USERS = Arrays.asList(
             new UserPass("admin", "admin"),
             new UserPass("user", "user"));

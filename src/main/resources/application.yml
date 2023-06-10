@@ -3,7 +3,7 @@ spring:
     name: movies-api
   data:
     mongodb:
-      uri: mongodb://localhost:27017/moviesdb
+      uri: mongodb://mongodb:27017/moviesdb
   keycloak:
       server-url: http://localhost:8080
   security:
@@ -20,8 +20,13 @@ jwt:
       principal-attribute: preferred_username
 
 app:
+  redirect-url:
   cors:
-    allowed-origins: http://localhost:3000
+    allowed-origins:  ${movies-app.base-url}
+
+movies-app:
+  base-url: http://localhost:3000
+  redirect-url: ${movies-app.base-url}/*
 
 management:
   endpoints:

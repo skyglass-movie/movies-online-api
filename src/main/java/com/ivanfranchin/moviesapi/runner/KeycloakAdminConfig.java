@@ -11,6 +11,7 @@ import java.util.List;
 @Configuration
 public class KeycloakAdminConfig {
 
+
     @Bean
     public Keycloak keycloakAdmin(@Value("${spring.keycloak.server-url}") String serverUrl) {
         return KeycloakBuilder.builder()
