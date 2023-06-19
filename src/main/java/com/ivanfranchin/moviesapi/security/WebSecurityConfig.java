@@ -1,6 +1,5 @@
 package com.ivanfranchin.moviesapi.security;
 
-import com.ivanfranchin.moviesapi.filter.CsrfCookieFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,12 +23,14 @@ import java.util.Collections;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private final JwtAuthConverter jwtAuthConverter;
+    //private final JwtAuthConverterOld jwtAuthConverter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new com.eazybytes.config.KeycloakRoleConverter());
         http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
@@ -39,9 +39,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/userextras/me").hasAnyRole(MOVIES_MANAGER, USER)
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated();
-        http.oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthConverter);
+        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().configurationSource(new CorsConfigurationSource() {
             @Override
