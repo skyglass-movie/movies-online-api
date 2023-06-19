@@ -38,10 +38,14 @@ movies-app:
 management:
   endpoints:
     web:
-      exposure.include: beans, env, health, info, metrics, mappings
+      exposure.include: beans, env, configprops, health, info, metrics, mappings
   endpoint:
     health:
       show-details: always
+    env:
+      sensitive: false
+    configprops:
+      sensitive: false
 
 springdoc:
   show-actuator: true

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-//@Configuration
+@Configuration
 public class CorsConfig implements WebMvcConfigurer  {
 
     @Override
@@ -22,7 +22,7 @@ public class CorsConfig implements WebMvcConfigurer  {
                 .allowedHeaders("*");
     }
 
-/*    @Bean
+    @Bean
     public CorsFilter corsFilter(@Value("${app.cors.allowed-origins}") List<String> allowedOrigins) {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
@@ -32,5 +32,5 @@ public class CorsConfig implements WebMvcConfigurer  {
         config.addAllowedHeader("*");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-    }*/
+    }
 }
