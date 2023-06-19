@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class JwtAuthConverterOld implements Converter<Jwt, AbstractAuthenticationToken> {
+public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
     private final JwtAuthConverterProperties properties;
 
-    public JwtAuthConverterOld(JwtAuthConverterProperties properties) {
+    public JwtAuthConverter(JwtAuthConverterProperties properties) {
         this.properties = properties;
     }
 
